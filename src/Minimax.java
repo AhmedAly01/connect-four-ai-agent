@@ -3,6 +3,8 @@ import java.util.*;
 public class Minimax {
     private final int maxDepth;
     public static class State {
+
+        public State next;
         //The depth of the state in the search tree
         private final int depth;
         //This boolean is 1 if the state is under agent's control (Maximizer),
@@ -20,7 +22,7 @@ public class Minimax {
         //0 1 2 3 4 5 6
         //first col from bottom to top + second col from bottom to top ...
         //index in the string = x + 6 * y
-        private final String boardState;
+        public final String boardState;
 
         public State(int depth, boolean maxOrMin, String boardState) {
             this.depth = depth;
@@ -171,10 +173,10 @@ public class Minimax {
 
         //Agent turn
         if(state.maxOrMin)
-            return maximizer(new State(state.depth, true, state.boardState));
+            return maximizer(state);
 
         //Opponent turn
-        return minimizer(new State(state.depth, false, state.boardState));
+        return minimizer(state);
     }
 
     /**
@@ -184,7 +186,10 @@ public class Minimax {
         int v = Integer.MIN_VALUE;
         ArrayList<State> successors = getSuccessors(state);
         for (State successor: successors) {
-            v = Math.max(v, value(successor));
+            int newV = value(successor);
+            if (newV > v)
+                v = newV;
+            state.next = successor;
         }
         return v;
     }
@@ -196,7 +201,10 @@ public class Minimax {
         int v = Integer.MAX_VALUE;
         ArrayList<State> successors = getSuccessors(state);
         for (State successor: successors) {
-            v = Math.min(v, value(successor));
+            int newV = value(successor);
+            if (newV < v)
+                v = newV;
+            state.next = successor;
         }
         return v;
     }

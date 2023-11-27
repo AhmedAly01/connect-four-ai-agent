@@ -21,9 +21,10 @@ public class Main {
 
     public static void main(String[] args) {
         Minimax aiAgent = new Minimax(7);
-        System.out.println(aiAgent.value(new Minimax.State(0, true, readBoard("test0.txt"))));
-
-        System.out.println(aiAgent.abValue(new Minimax.State(0, true, readBoard("test0.txt")),
-                Integer.MIN_VALUE, Integer.MAX_VALUE));
+        Minimax.State state = new Minimax.State(0, true, readBoard("test0.txt"));
+        System.out.println(state.boardState);
+        System.out.println(aiAgent.value(state));
+        System.out.println(state.next.boardState);
+        System.out.println(aiAgent.abValue(state, Integer.MIN_VALUE, Integer.MAX_VALUE));
     }
 }
