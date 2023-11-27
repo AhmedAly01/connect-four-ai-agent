@@ -187,9 +187,10 @@ public class Minimax {
         ArrayList<State> successors = getSuccessors(state);
         for (State successor: successors) {
             int newV = value(successor);
-            if (newV > v)
+            if (newV > v) {
                 v = newV;
-            state.next = successor;
+                state.next = successor;
+            }
         }
         return v;
     }
@@ -202,9 +203,10 @@ public class Minimax {
         ArrayList<State> successors = getSuccessors(state);
         for (State successor: successors) {
             int newV = value(successor);
-            if (newV < v)
+            if (newV < v) {
                 v = newV;
-            state.next = successor;
+                state.next = successor;
+            }
         }
         return v;
     }
@@ -230,7 +232,11 @@ public class Minimax {
         int v = Integer.MIN_VALUE;
         ArrayList<State> successors = getSuccessors(state);
         for (State successor: successors) {
-            v = Math.max(v, abValue(successor, alpha, beta));
+            int newV = abValue(successor, alpha, beta);
+            if (newV > v) {
+                v = newV;
+                state.next = successor;
+            }
             if (v >= beta)
                 return v;
             alpha = Math.max(alpha, v);
@@ -242,7 +248,11 @@ public class Minimax {
         int v = Integer.MAX_VALUE;
         ArrayList<State> successors = getSuccessors(state);
         for (State successor: successors) {
-            v = Math.min(v, abValue(successor, alpha, beta));
+            int newV = abValue(successor, alpha, beta);
+            if (newV < v) {
+                v = newV;
+                state.next = successor;
+            }
             if (v <= alpha)
                 return v;
             beta = Math.min(beta, v);

@@ -111,6 +111,10 @@ public class GUI extends JFrame implements ActionListener {
                             );
                 }
             }
+
+            if (!state.contains("#")) {
+                printScore(this);
+            }
         }
         catch (final NumberFormatException ex) {
             throw new RuntimeException("Incorrect Input.");
@@ -134,7 +138,12 @@ public class GUI extends JFrame implements ActionListener {
         return x + 6 * y;
     }
 
+    public static void printScore(GUI gui){
+        System.out.println("Final Score: ");
+        System.out.println(gui.aiAgent.value(new Minimax.State(gui.depth, true, gui.state)));    }
+
     public static void main (String[] args) {
         GUI gui = new GUI();
     }
+
 }
