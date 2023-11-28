@@ -23,8 +23,16 @@ public class Main {
         Minimax aiAgent = new Minimax(7);
         Minimax.State state = new Minimax.State(0, true, readBoard("test0.txt"));
         System.out.println(state.boardState);
+        long startTime1 = System.nanoTime();
         System.out.println(aiAgent.value(state));
+        long endTime1 = System.nanoTime();
+        long executionTime = (endTime1 - startTime1) / 1000000;
         System.out.println(state.next.boardState);
+        long startTime2 = System.nanoTime();
         System.out.println(aiAgent.abValue(state, Integer.MIN_VALUE, Integer.MAX_VALUE));
+        long endTime2 = System.nanoTime();
+        long executionTime2 = (endTime2 - startTime2) / 1000000;
+        System.out.println("Execution time minimax : " + executionTime + "ms" + " Expanded nodes " +aiAgent.expM) ;
+        System.out.println("Execution time alpha beta: " + executionTime2 + "ms"+ " Expanded nodes " +aiAgent.expab);
     }
 }

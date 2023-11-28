@@ -1,6 +1,8 @@
 import java.util.*;
 
 public class Minimax {
+    int expM = 0;
+    int expab = 0;
     private final int maxDepth;
     public static class State {
 
@@ -28,6 +30,31 @@ public class Minimax {
             this.depth = depth;
             this.maxOrMin = maxOrMin;
             this.boardState = boardState;
+        }
+        @Override
+        public String toString(){
+            String mod  = null;
+            if(maxOrMin){
+                mod = "Max";
+            }else{
+                mod = "min";
+            }
+            char [] board = boardState.toCharArray();
+            char[][] real_board = new char[6][7];
+            for (int i = 0; i < 6; i++) {
+                for (int j = 0; j < 7; j++) {
+                    real_board[5-i][j] = board[i+6*j];
+                }
+            }
+
+            return depth + " " + mod +
+                    "\n" + new String(real_board[0]) +
+                    "\n" + new String(real_board[1])+
+                    "\n" + new String(real_board[2])+
+                    "\n" + new String(real_board[3])+
+                    "\n" + new String(real_board[4])+
+                    "\n" + new String(real_board[5])
+            ;
         }
     }
     public Minimax(int maxDepth) {
@@ -164,6 +191,7 @@ public class Minimax {
      * */
     public int value(State state) {
         //Return a heuristic about possible wining/losing/tiling.
+        expM ++;
         if (state.depth == maxDepth)
             return terminalScore(state.boardState) + heuristicScore(state.boardState);
 
@@ -185,13 +213,18 @@ public class Minimax {
     private int maximizer(State state) {
         int v = Integer.MIN_VALUE;
         ArrayList<State> successors = getSuccessors(state);
+
         for (State successor: successors) {
             int newV = value(successor);
+            System.out.println(newV);
+            System.out.println(successor.toString());
+
             if (newV > v) {
                 v = newV;
                 state.next = successor;
             }
         }
+        System.out.println();
         return v;
     }
 
@@ -200,18 +233,25 @@ public class Minimax {
      * */
     private int minimizer(State state) {
         int v = Integer.MAX_VALUE;
+
         ArrayList<State> successors = getSuccessors(state);
+
         for (State successor: successors) {
             int newV = value(successor);
+            System.out.println(newV);
+            System.out.println(successor.toString());
+
             if (newV < v) {
                 v = newV;
                 state.next = successor;
             }
         }
+
         return v;
     }
 
     public int abValue(State state, int alpha, int beta) {
+        expab++;
         //Return a heuristic about possible wining/losing/tiling.
         if (state.depth == maxDepth)
             return terminalScore(state.boardState) + heuristicScore(state.boardState);
@@ -233,6 +273,8 @@ public class Minimax {
         ArrayList<State> successors = getSuccessors(state);
         for (State successor: successors) {
             int newV = abValue(successor, alpha, beta);
+            System.out.println(newV);
+            System.out.println(successor.toString());
             if (newV > v) {
                 v = newV;
                 state.next = successor;
@@ -249,6 +291,8 @@ public class Minimax {
         ArrayList<State> successors = getSuccessors(state);
         for (State successor: successors) {
             int newV = abValue(successor, alpha, beta);
+            System.out.println(newV);
+            System.out.println(successor.toString());
             if (newV < v) {
                 v = newV;
                 state.next = successor;
